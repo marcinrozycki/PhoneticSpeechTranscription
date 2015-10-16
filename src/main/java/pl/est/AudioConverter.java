@@ -1,30 +1,40 @@
 package pl.est;
 
-
-
 import it.sauronsoftware.jave.AudioAttributes;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncodingAttributes;
 import java.io.File;
 
 public class AudioConverter {
-	public File convert(File input, File output) {
-		final Encoder encoder = new Encoder();
-		final EncodingAttributes attributes = new EncodingAttributes();
-		attributes.setFormat("wav");
-		final AudioAttributes audio = new AudioAttributes();
-		audio.setBitRate(new Integer(256000));
-		audio.setChannels(new Integer(1));
-		audio.setSamplingRate(new Integer(16000));
-		attributes.setAudioAttributes(audio);
+	private Encoder encoder;
+	private EncodingAttributes encodingAttributes;
+	private AudioAttributes audioAttributes;
 
-		final File source = input;
-		final File target = output;
-		try{
-			encoder.encode(source, target, attributes);
+	public AudioConverter() {
+		encoder = new Encoder();
+		setupAudioAttributes();
+		setupEncodingAttributes();
+	}
+
+	public File convert(File input, File output) {
+		try {
+			encoder.encode(input, output, encodingAttributes);
 		} catch (final Exception e) {
 			e.printStackTrace();
-		} 
-		return target;
+		}
+		return output;
+	}
+
+	private void setupEncodingAttributes() {
+		encodingAttributes = new EncodingAttributes();
+		encodingAttributes.setFormat("wav");
+		encodingAttributes.setAudioAttributes(audioAttributes);
+	}
+
+	private void setupAudioAttributes() {
+		audioAttributes = new AudioAttributes();
+		audioAttributes.setBitRate(new Integer(256000));
+		audioAttributes.setChannels(new Integer(1));
+		audioAttributes.setSamplingRate(new Integer(16000));
 	}
 }

@@ -19,8 +19,10 @@ public class SpeechRecognitionTest {
 		final File input = new File("src/test/resources/goodby44.wav");
 		final File output = new File("src/test/resources/output.wav");
 		// when
+		long start = System.currentTimeMillis();
 		final String result = speechRec.speechRec(input, output);
-
+		long stop = System.currentTimeMillis();
+		System.out.println("Czas wykonania:" + (stop - start));
 		// then
 		assertThat(result).isEqualTo("G UH DH AH B AY");
 

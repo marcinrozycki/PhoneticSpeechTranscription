@@ -14,6 +14,7 @@ public class Transcription {
 	private static Transcription instance;
 	private HashMap<String, String> transcriptions;
 	private CSVReader reader;
+	private static final String NOTHING_RECOGNIZED = "Nic nie rozpoznano";
 
 	private Transcription() {
 		transcriptions = new HashMap<String, String>();
@@ -30,8 +31,9 @@ public class Transcription {
 
 	private void readPhoneticDictionary(File dictionaryPath) {
 		try {
-			reader = new CSVReader(new InputStreamReader(new FileInputStream(
-					dictionaryPath), "UTF-8"), ';', '"', 0);
+			FileInputStream dictionaryInput = new FileInputStream(dictionaryPath);
+			InputStreamReader dictionaryInputStream = new InputStreamReader(dictionaryInput, "UTF-8");
+			reader = new CSVReader(dictionaryInputStream, ';', '"', 0);
 			List<String[]> dictionaryLines = reader.readAll();
 			for (String[] symbols : dictionaryLines) {
 				transcriptions.put(symbols[0], symbols[1]);
@@ -53,7 +55,7 @@ public class Transcription {
 			}
 		}
 		if (isResultEmpty(result)) {
-			return "Nic nie rozpoznano";
+			return NOTHING_RECOGNIZED;
 		} else {
 			return result;
 		}
