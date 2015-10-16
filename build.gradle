@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = 1.8
+version = '1.0'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'English Speech Transcription', 'Implementation-Version': version
+        attributes "Main-Class" : 'pl.est.MainWindow'
+    } 	
+    from { 
+    	configurations.compile.collect { 
+    		it.isDirectory() ? it : zipTree(it) 
+    	} 
+    }
+   
+}
+
+
+repositories {
+    mavenCentral()
+    maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+  }
+
+dependencies {
+	compile files('jave-1.0.2.jar')
+ 	compile "edu.cmu.sphinx:sphinx4-core:1.0-SNAPSHOT"
+ 	compile "edu.cmu.sphinx:sphinx4-data:1.0-SNAPSHOT"
+ 	compile "net.sf.opencsv:opencsv:2.3"
+ 	  
+  	testCompile 'junit:junit:4.+'
+	testCompile 'org.assertj:assertj-core:1.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
