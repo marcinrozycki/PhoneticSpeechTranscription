@@ -1,7 +1,6 @@
 package pl.est;
 
 import java.io.*;
-import java.net.MalformedURLException;
 
 import edu.cmu.sphinx.api.*;
 import edu.cmu.sphinx.recognizer.Recognizer;
@@ -14,6 +13,8 @@ public class SpeechRecognition {
 	private static final String RESOURCE_EN_US = "resource:/en-us";
 	private static final String ALLPHONE_SEARCH_MANAGER = "allphoneSearchManager";
 	private static final String DECODER_SEARCH_MANAGER = "decoder->searchManager";
+	private static final String LANGUAGE_MODEL = "resource:/en-us.lm.dmp";
+
 	private AudioConverter converter = new AudioConverter();
 	Configuration configuration;
 
@@ -28,8 +29,20 @@ public class SpeechRecognition {
 		return cleanResult(result);
 	}
 
+	public String fullSpeechRec(File input, File output) throws IOException {
+		Configuration config = config();
+		StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(config);
+		InputStream stream = new FileInputStream(input);
+
+		recognizer.startRecognition(stream);
+		SpeechResult result;
+		result = recognizer.getResult();
+		recognizer.stopRecognition();
+		return result.getHypothesis();
+	}
+
 	private Recognizer setupRecognizer(File input, File output)
-			throws IOException, MalformedURLException, FileNotFoundException {
+			throws IOException {
 		Context context = setupContext(configuration);
 		Recognizer recognizer = context.getInstance(Recognizer.class);
 		InputStream stream = new FileInputStream(converter.convert(input,
@@ -47,7 +60,7 @@ public class SpeechRecognition {
 	}
 
 	private Context setupContext(final Configuration configuration)
-			throws IOException, MalformedURLException {
+			throws IOException {
 		final Context context = new Context(configuration);
 		context.setLocalProperty(DECODER_SEARCH_MANAGER,
 				ALLPHONE_SEARCH_MANAGER);
@@ -58,6 +71,7 @@ public class SpeechRecognition {
 		final Configuration configuration = new Configuration();
 		configuration.setAcousticModelPath(RESOURCE_EN_US);
 		configuration.setDictionaryPath(RESOURCE_CMUDICT_EN_US_DICT);
+		configuration.setLanguageModelPath(LANGUAGE_MODEL);
 		return configuration;
 	}
 }

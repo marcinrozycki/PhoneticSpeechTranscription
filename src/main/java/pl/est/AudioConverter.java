@@ -1,8 +1,7 @@
 package pl.est;
 
-import it.sauronsoftware.jave.AudioAttributes;
-import it.sauronsoftware.jave.Encoder;
-import it.sauronsoftware.jave.EncodingAttributes;
+import ws.schild.jave.*;
+
 import java.io.File;
 
 public class AudioConverter {
@@ -18,7 +17,8 @@ public class AudioConverter {
 
 	public File convert(File input, File output) {
 		try {
-			encoder.encode(input, output, encodingAttributes);
+			MultimediaObject inputObject = new MultimediaObject(input);
+			encoder.encode(inputObject, output, encodingAttributes);
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}

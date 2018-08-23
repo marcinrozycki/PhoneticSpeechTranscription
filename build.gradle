@@ -35,12 +35,12 @@ repositories {
   }
 
 dependencies {
-	compile files('jave-1.0.2.jar')
  	compile "edu.cmu.sphinx:sphinx4-core:5prealpha-SNAPSHOT"
  	compile "edu.cmu.sphinx:sphinx4-data:5prealpha-SNAPSHOT"
  	compile "net.sf.opencsv:opencsv:2.3"
  	compile "org.jsoup:jsoup:1.9.1"
- 	  
+    compile group: 'ws.schild', name: 'jave-all-deps', version: '2.4.1'
+
   	testCompile 'junit:junit:4.+'
 	testCompile 'org.assertj:assertj-core:1.+'
 }

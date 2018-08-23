@@ -3,10 +3,10 @@ package pl.est;
 import static org.assertj.core.api.Assertions.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
-
-import pl.est.SpeechRecognition;
 
 public class SpeechRecognitionTest {
 
@@ -24,7 +24,69 @@ public class SpeechRecognitionTest {
 		long stop = System.currentTimeMillis();
 		System.out.println("Czas wykonania:" + (stop - start));
 		// then
-		assertThat(result).isEqualTo("G UH DH AH B AY");
+		assertThat(result).isEqualTo("G UH D AH B AY");
 
+	}
+
+	@Test
+	public void shouldReturnStrings_whenGivenAudioInputWithSpeech()
+			throws IOException {
+
+		// given
+		final SpeechRecognition speechRec = new SpeechRecognition();
+		final File output = new File("src/test/resources/output.wav");
+		File f = new File("src/test/resources/conttestdb");
+		ArrayList<File> files = new ArrayList<File>(Arrays.asList(f.listFiles()));
+		ArrayList<String> results = new ArrayList<>();
+
+		// when
+		long start = System.currentTimeMillis();
+		for(File file :files) {
+			String result = speechRec.speechRec(file, output);
+			String fileName = file.getName().replace(".wav", "");
+			results.add(fileName + " : " + result);
+		}
+		long stop = System.currentTimeMillis();
+		System.out.println("Operation time: " + (stop - start));
+		// then
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for (String res : results) {
+			System.out.println(res);
+		}
+	}
+
+	@Test
+	public void shouldReturnFullRecognizedStrings_whenGivenAudioInputWithSpeech()
+			throws IOException {
+
+		// given
+		final SpeechRecognition speechRec = new SpeechRecognition();
+		final File output = new File("src/test/resources/output.wav");
+		File f = new File("src/test/resources/conttestdb");
+		ArrayList<File> files = new ArrayList<File>(Arrays.asList(f.listFiles()));
+		ArrayList<String> results = new ArrayList<>();
+
+		// when
+		long start = System.currentTimeMillis();
+		for(File file :files) {
+			String result = speechRec.fullSpeechRec(file, output);
+			String fileName = file.getName().replace(".wav", "");
+			results.add(fileName + " : " + result);
+		}
+		long stop = System.currentTimeMillis();
+		System.out.println("Operation time: " + (stop - start));
+		// then
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for (String res : results){
+			System.out.println(res);
+		}
 	}
 }
