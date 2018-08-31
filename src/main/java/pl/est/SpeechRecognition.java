@@ -29,7 +29,7 @@ public class SpeechRecognition {
 		return cleanResult(result);
 	}
 
-	public String fullSpeechRec(File input, File output) throws IOException {
+	public String fullSpeechRec(File input) throws IOException {
 		Configuration config = config();
 		StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(config);
 		InputStream stream = new FileInputStream(input);
